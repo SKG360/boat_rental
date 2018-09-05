@@ -113,4 +113,39 @@ class DockTest < Minitest::Test
     assert_equal 11, dock.log_hour
     assert_equal 195, dock.revenue
   end
+
+  def test_rental_revenue_after_two_returns
+    dock = Dock.new("The Rowing Dock", 3)
+
+    kayak_1 = Boat.new(:kayak, 20)
+    kayak_2 = Boat.new(:kayak, 20)
+    canoe = Boat.new(:canoe, 25)
+    sup_1 = Boat.new(:standup_paddle_board, 15)
+    sup_2 = Boat.new(:standup_paddle_board, 15)
+
+    patrick = Renter.new("Patrick Star", "4242424242424242")
+    eugene = Renter.new("Eugene Crabs", "1313131313131313")
+
+    dock.rent(kayak_1, patrick)
+    dock.rent(kayak_2, patrick)
+    dock.rent(canoe, patrick)
+
+    kayak_1.add_hour
+    kayak_2.add_hour
+    canoe.add_hour
+    kayak_1.add_hour
+    kayak_2.add_hour
+
+    dock.rent(sup_1, eugene)
+    dock.rent(sup_2, eugene)
+
+    3.times {sup_1.add_hour}
+    3.times {sup_2.add_hour}
+
+    dock.return(sup_1)
+    dock.return(sup_2)
+
+    assert_equal 11, dock.log_hour
+    assert_equal 195, dock.revenue
+  end
 end

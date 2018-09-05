@@ -21,9 +21,9 @@ class Dock
     end
   end
 
-  def return
+  def return(type)
     # stops tracking how long the Boat is rented.
-
+    if type 
   end
 
   def log_hour
